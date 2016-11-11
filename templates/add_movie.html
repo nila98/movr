@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>Add Movies!!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/signup.css" rel="stylesheet" media="screen">
+    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="../static/add_movie.js"></script>
+  </head>
+  <body>
+    <div class="container">
+        <form class="form-add_movie">
+        <h2>Add Movie</h2>
+        <h5>UserID</h5>
+        <label for="inputUserID" class="sr-only">ID</label>
+        <input type="text" name="inputUserID" id="inputUserID" class="form-control">
+        <h5>Movie</h5>
+        <label for="inputMovie" class="sr-only">First Name</label>
+        <input type="text" name="inputMovie" id="inputMovie" class="form-control">
+
+        <button id="btnadd_movie" class="btn btn-lg btn-primary btn-block" type="button">Add Movie</button>
+
+        <div id="add_movie-alert" class="alert alert-success" role="alert">Added</div>
+        </form>
+    </div>
+  </body>
+</html>
+

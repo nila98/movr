@@ -1,0 +1,26 @@
+body {
+  
+}
+
+.form-signup {
+  max-width: 330px;
+  padding-top: 40px;
+  margin: 0 auto;
+  
+}
+
+.form-signup h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.form-signup input {
+  margin: 10px 0;
+}
+
+.form-signup #signup-alert {
+  margin: 20px 0;
+}
+
+
+

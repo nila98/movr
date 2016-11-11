@@ -1,0 +1,28 @@
+<html>
+<head>
+  <title>Find common movie</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="static/commonmovie.css" rel="stylesheet" media="screen">
+  <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="../static/commonmovie.js"></script>
+</head>
+<body>
+  <div class="container">
+    <form class="form-findcommonmovie">
+      <h2>List common movies, to be used when finding a match</h2>
+      <h5>Username of user 1</h5>
+      <label for="username1" class="sr-only">Username 1</label>
+      <input type="text" name="username1" id="username1" class="form-control">
+      <h5>Username of user 2</h5>
+      <label for="username2" class="sr-only">Username 2</label>
+      <input type="text" name="username2" id="username2" class="form-control">
+      <button id="btnfindcommon" class="btn btn-lg btn-primary btn-block" type="button">Search</button>
+
+      <div id="commonmovie-alert" class="alert alert-success" role="alert">Added</div>
+
+    </form>
+  </div>
+</body>
+</html>
+
