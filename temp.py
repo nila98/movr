@@ -7,7 +7,7 @@ db="main")
 cursor = db.cursor()
 
 # execute SQL select statement
-_userID = 26
+_userID = 27
 cursor.execute("SELECT TitleID FROM UserTitle WHERE UserID = %s",(_userID,))
 
 data = cursor.fetchall()#data = ((1L,), (2L,), (7L,)) type:tuples
@@ -17,7 +17,7 @@ tagList=[]
 
 for item in data:
 	cursor.execute("select keyword_id from movie_keyword where movie_id = %s",item)
-	tagList.extend(cursor.fetchall())
+	tagList.extend([item[0] for item in cursor.fetchall()])
 
 
 cursor.execute("SELECT * FROM UserTitle")
@@ -56,31 +56,53 @@ for ind,item in enumerate(userOnly):
 		
 	sharedTags.append(tempShareTags)
 
-from itertools import groupby
-from collections import Counter
-countTags = []
-countTagMovies = []
+truShare = []
+truNum=[]
 for item in sharedTags:
-	if item != []:
-		#item = item.sort()
-		h = list(set(item))
-		currCount = []
-		for i in h:
-			hh = item.count(i)
-			currCount.append(hh)
-			
-		countTags.append(currCount)
-		countTagMovies.append(h)
-		#countTags.append([len(list(group)) for key, group in groupby(item)])
-	else:
-		countTags.append([])
-		countTagMovies.append([])
-#for x,y in enumerate(countTags):
-#	print countTags[y]
-#print countTags
-#print countTags
-print countTagMovies
+	sharetemp = list(set(item).intersection(tagList))
+	truShare.append(sharetemp)
+	truNum.append(len(sharetemp))
 
+#print userOnly
+#print truNum
+#print truShare
+print inputMovies
+truMovie = []
+truMovcount = []
+for item in movieOnly:
+	print item
+	sharetemp = list(set(item).intersection(inputMovies))
+	truMovie.append(sharetemp)
+	truMovcount.append(len(sharetemp))
+
+
+
+print "user id"
+print userOnly
+print "Num of shared movies:"
+print truMovcount
+print "Num of shared tags"
+print truNum
+
+friends = []
+cursor.execute("select FriendID from UserUser where UserID = %s",(_userID,))
+allFriends = cursor.fetchall()
+friends.extend([x[0] for x in allFriends])
+
+
+#dictionary = dict(zip(userOnly, truMovcount))
+#print dictionary
+dictionary = dict(zip(userOnly, truMovcount))
+print dictionary
+print "sorted"
+import operator
+dictionary = sorted(dictionary.items(), key=operator.itemgetter(1), reverse = True)
+print dictionary
+dictionary = map(list, dictionary)
+print dictionary
+#print "Recommendation based on Movies"
+
+#print "Recommendation based on Tags"
 
 
 db.commit()

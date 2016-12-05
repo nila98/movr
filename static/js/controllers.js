@@ -51,7 +51,14 @@ movrControllers.controller('LoginController', ['$scope', 'AuthService', function
 movrControllers.controller('UserPageController', ['$scope', 'AuthService', 'UserService', 'MovieService', function($scope, AuthService, UserService, MovieService) {
     $scope.user = null;
     $scope.movies = null;
-    
+    $scope.getSimilarity = function(movie_id) {
+        MovieService.getRecommendedMovie(movie_id, $scope.user.username).then(function(result) {
+            console.log('got it woosdof');
+            console.log(result);
+        }).catch(function(message) {
+            console.log(message);
+        });
+    };
     AuthService.getUser().then(function(userdata) {
         MovieService.getMoviesForUser(userdata.username).then(function(moviedata) {
             var ret = [];

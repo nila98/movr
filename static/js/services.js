@@ -140,14 +140,27 @@ movrServices.factory('MovieService', function($q, $http, $rootScope) {
         });
         return deferred.promise;
     },
-    getRecommendedMovie() {
+    getRecommendedMovie(movie_id, user_id) {
         // get all keywords of a user's UserTitle
         // parse keywords into dictionary, with frequency as keys
         // select a movie according to formula:
         // weighted intersection / weighted union, where items not in the dictionary are weighted as 1.
         // choose movie that has highest value
 
-        
+        var deferred = $q.defer();
+        $http.post('/getleftjaccardvalue', {movie_id: movie_id, user_id: user_id})
+        .success(function(data) {
+            if (data.result = 'true') {
+                console.log('jaccard val');
+                console.log(data);
+                deferred.resolve(data.data);
+            } else {
+                deferred.reject(data.message);
+            }
+        }).error(function(data) {
+            deferred.reject(data.message);
+        });
+        return deferred.promise;
     },
     getKeywordsForMovie(movie_id) {
         var deferred = $q.defer();

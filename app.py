@@ -1,6 +1,9 @@
 from flask import Flask, render_template, redirect, url_for, request, json, jsonify
 from flask_mysqldb import MySQL
 
+import simplejson
+from decimal import Decimal
+
 app = Flask(__name__)
 
 app.config['MYSQL_USER'] = 'root'
@@ -187,6 +190,41 @@ def getmoviewithid():
 			})
 		else:
 			return jsonify(data=data, result='true')
+	except Exception as e:
+		return jsonify({'result': 'false', 'message': str(e)})
+	finally:
+		cursor.close()
+
+@app.route('/getleftjaccardvalue', methods=['POST'])
+def getleft():
+	movie_id = request.json['movie_id']
+	user_id = request.json['user_id']
+	cursor = mysql.connection.cursor()
+	try:
+		cursor.callproc('getLeftValueForUserMovie', (movie_id, user_id))
+		left = cursor.fetchall()
+		print left[0][0]
+		return simplejson.dumps({
+			'result': 'true',
+			'data': Decimal(left[0][0])
+		})
+	except Exception as e:
+		return jsonify({'result': 'false', 'message': str(e)})
+	finally:
+		cursor.close()
+
+@app.route('/getunionjaccardvalue', methods=['POST'])
+def getunion():
+	movie_id = request.json['movie_id']
+	user_id = request.json['user_id']
+	cursor = mysql.connection.cursor()
+	try:
+		cursor.callproc('getUnionValueForUserMovie', (movie_id, user_id))
+		union = cursor.fetchall()
+		return jsonify({
+			'result': 'true',
+			'data': union[0][0]
+		})
 	except Exception as e:
 		return jsonify({'result': 'false', 'message': str(e)})
 	finally:

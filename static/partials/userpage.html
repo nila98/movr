@@ -8,12 +8,26 @@
         <a ng-href="#/moviedetails/{{movie[1]}}" ng-repeat="movie in movies">
 	    <span ng-bind="movie[0]"></span><br>
 	    <!--<span ng-repeat="keyword in movie[2]"><span ng-bind="keyword[0]"</span></span>-->
+            <button ng-click="getSimilarity(movie[1])" type="button" class="tiny button">Get Similarity</button>
         </a>
         <br>
     </div>
+
     <div class="small-10 small-centered column">
         <a ng-href="#/addmovie" class="button">Add favorite movies</a>
     </div>
+
+
+    <div class="small-10 small-centered column">
+        <h5>Your friends list:</h5>
+
+        <a ng-href="#/frienddetails/{{friend[1]}}" ng-repeat="friend in friends">
+            <span ng-bind="friend[0]"></span><br>
+        </a>
+        <br>
+    </div>
+
+
 </div>
 
 
