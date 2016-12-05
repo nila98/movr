@@ -59,24 +59,27 @@ for ind,item in enumerate(userOnly):
 from itertools import groupby
 from collections import Counter
 countTags = []
+countTagMovies = []
 for item in sharedTags:
 	if item != []:
 		#item = item.sort()
-		print item
-		a = reversed(sorted(item,key=item.count))
-		outlist = []
-		for element in a:
-			if element not in outlist:
-				outlist.append(element)
-		print a
-		countTags.append(outlist)
+		h = list(set(item))
+		currCount = []
+		for i in h:
+			hh = item.count(i)
+			currCount.append(hh)
+			
+		countTags.append(currCount)
+		countTagMovies.append(h)
 		#countTags.append([len(list(group)) for key, group in groupby(item)])
 	else:
 		countTags.append([])
+		countTagMovies.append([])
 #for x,y in enumerate(countTags):
 #	print countTags[y]
 #print countTags
-
+#print countTags
+print countTagMovies
 
 
 
