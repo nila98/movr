@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, json
+from flask import Flask, render_template, redirect, url_for, request, json, jsonify
 from flask_mysqldb import MySQL
 
 app = Flask(__name__)
@@ -17,43 +17,178 @@ mysql = MySQL(app)
 def home():
 	return render_template('index.html')
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
-    error = None
-    if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-            error = 'Invalid Credentials. Please try again.'
-        else:
-            return redirect(url_for('home'))
-    return render_template('login.html', error=error)
-
-@app.route('/showsignup', methods=['GET', 'POST'])
-def showsignup():
-	if request.method == 'GET':
-		return render_template('signup.html')
-
 	cursor = mysql.connection.cursor()
-	print "connected to db"
 	try:
-		_username = request.form['inputUsername']
-		_firstname = request.form['inputFirstname']
-		_lastname = request.form['inputLastname']
-		_password = request.form['inputPassword']
-		_picurl = request.form['inputPicurl']
+		_username = request.json['inputUsername']
+		_password = request.json['inputPassword']
 		
-		if _username and _password and _firstname and _lastname:
-			cursor.callproc('createUser', (_username, _firstname, _lastname, _password, _picurl))
-			data = cursor.fetchall()
-			
-			if len(data) is 0:
-				mysql.connection.commit()
-				return 'success'
-			else:
-				return data[0]
+		cursor.callproc('validateLogin', (_username,))
+		data = cursor.fetchall()
+		if len(data) is 0:
+			return jsonify({
+				'result': 'false',
+				'message': 'User not found'
+			})
 		else:
-			return 'Please enter the required fields'
+			if data[0][0] == _password:
+				return jsonify({
+					'result': 'true',
+					'message': 'Success',
+					'data': {
+						'username': _username
+					}
+				})
+			else:
+				return jsonify({
+					'result': 'false',
+					'message': 'Incorrect password'
+				})
 	except Exception as e:
-		return e
+		return jsonify({
+			'result': 'false',
+			'message': str(e)
+		})
+	finally:
+		cursor.close()
+			
+	
+
+@app.route('/signup', methods=['POST'])
+def signup():
+	cursor = mysql.connection.cursor()
+	try:
+		_username = request.json['username']
+		_password = request.json['password']
+		_firstname = request.args.get('firstname')
+		_lastname = request.args.get('lastname')
+		_picurl = request.args.get('picurl')
+		
+		cursor.callproc('createUser', (_username, _firstname, _lastname, _password, _picurl))
+		data = cursor.fetchall()
+		
+		if len(data) is 0:
+			mysql.connection.commit()
+			return jsonify({
+				'result': 'true'
+			})
+		else:
+			return jsonify({
+				'result': 'false',
+				'message': data[0]
+			})
+	except Exception as e:
+		return jsonify({
+			'result': 'false',
+			'message': str(e)
+		})
+	finally:
+		cursor.close()
+
+@app.route('/getuser', methods=['POST'])
+def getuser():
+	username = request.json['username']
+	cursor = mysql.connection.cursor()
+	try:
+		cursor.callproc('getUser', (username,))
+		data = cursor.fetchall()
+		if len(data) is 0:
+			return jsonify({'result': 'false', 'message': 'User not found'})
+		else:
+			return jsonify(data=data, result='true')
+	except Exception as e:
+		return jsonify({'result': 'false', 'message': str(e)})
+	finally:
+		cursor.close()
+
+@app.route('/getmovieswithtitle', methods=['POST'])
+def getmovie():
+	title = request.json['title']
+	cursor = mysql.connection.cursor()
+	try:
+		cursor.callproc('getMoviesWithTitle', (title,))
+		data = cursor.fetchall()
+		if len(data) is 0:
+			return jsonify({'result': 'false', 'message': 'No movies found'})
+		else:
+			return jsonify(data=data, result='true')
+	except Exception as e:
+		return jsonify({'result': 'false', 'message': str(e)})
+	finally:
+		cursor.close()
+
+@app.route('/getmoviesforuser', methods=['POST'])
+def getmoviesforuser():
+	_username = request.json['username']
+	cursor = mysql.connection.cursor()
+	try:
+		cursor.callproc('getMoviesForUser', (_username,))
+		data = cursor.fetchall()
+		return jsonify(data=data, result='true')
+	except Exception as e:
+		return jsonify({'result': 'false', 'message': str(e)})
+	finally:
+		cursor.close()
+
+@app.route('/addfavmovieforuser', methods=['POST'])
+def addfavmovieforuser():
+	user_id = request.json['user_id']
+	movie_id = request.json['movie_id']
+	cursor = mysql.connection.cursor()
+	try:
+		cursor.callproc('addFavMovieForUser', (user_id, movie_id))
+		data = cursor.fetchall()
+		if len(data) is 0:
+			mysql.connection.commit()
+			return jsonify({
+				'result': 'true'
+			})
+		else:
+			return jsonify({
+				'result': 'false',
+				'message': data[0]
+			})
+	except Exception as e:
+		return jsonify({'result': 'false', 'message': str(e)})
+	finally:
+		cursor.close()
+
+@app.route('/getkeywordsformovie', methods=['POST'])
+def getkeywordsformovie():
+	movie_id = request.json['movie_id']
+	cursor = mysql.connection.cursor()
+	try:
+		cursor.callproc('getKeywordsForMovie', (movie_id,))
+		data = cursor.fetchall()
+		if len(data) is 0:
+			return jsonify({
+				'result': 'false',
+				'message': 'No keywords found'
+			})
+		else:
+			return jsonify(data=data, result='true')
+	except Exception as e:
+		return jsonify({'result': 'false', 'message': str(e)})
+	finally:
+		cursor.close()
+
+@app.route('/getmoviewithid', methods=['POST'])
+def getmoviewithid():
+	movie_id = request.json['movie_id']
+	cursor = mysql.connection.cursor()
+	try:
+		cursor.callproc('getMovieWithID', (movie_id,))
+		data = cursor.fetchall()
+		if len(data) is 0:
+			return jsonify({
+				'result': 'false',
+				'message': 'Not found'
+			})
+		else:
+			return jsonify(data=data, result='true')
+	except Exception as e:
+		return jsonify({'result': 'false', 'message': str(e)})
 	finally:
 		cursor.close()
 

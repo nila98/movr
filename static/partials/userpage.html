@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="small-10 small-centered column">
+        <h2>Welcome, <span ng-bind="user.firstname"></span> <span ng-bind="user.lastname"></span>!</h2>
+    </div>
+    <div class="small-10 small-centered column">
+        <h5>Your favorite movies:</h5>
+        
+        <a ng-href="#/moviedetails/{{movie[1]}}" ng-repeat="movie in movies">
+	    <span ng-bind="movie[0]"></span><br>
+	    <!--<span ng-repeat="keyword in movie[2]"><span ng-bind="keyword[0]"</span></span>-->
+        </a>
+        <br>
+    </div>
+    <div class="small-10 small-centered column">
+        <a ng-href="#/addmovie" class="button">Add favorite movies</a>
+    </div>
+</div>
+
+

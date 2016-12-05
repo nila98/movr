@@ -1,0 +1,21 @@
+
+<form name="loginForm" ng-submit="login()">
+<div class="row">
+    <div class="small-6 small-centered column">
+        <label><b>Username</b>
+            <input ng-model="username" type="text" required>
+        </label>
+         <label><b>Password</b>
+            <input ng-model="password" type="password" required>
+        </label>
+        <button type="submit" class="button">Submit</button>
+        
+       <div class="callout alert" ng-hide="message == ''">
+           <p><span ng-bind="message"></span></p>
+       </div>
+    </div>
+</div>
+</form>
+
+
+

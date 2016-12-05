@@ -1,4 +1,4 @@
-CTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -12,15 +12,18 @@ CTYPE html>
     <title>Movr</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="static/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="static/bootstrap.min.css" rel="stylesheet">-->
+    <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">-->
 
     <!-- Theme CSS -->
-    <link href="static/freelancer.min.css" rel="stylesheet">
+    <!--<link href="static/freelancer.min.css" rel="stylesheet">-->
 
     <!-- Custom Fonts -->
-    <link href="staticont-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="static/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.4/foundation.min.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -28,15 +31,17 @@ CTYPE html>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
+    <link href="static/css/index.css?v=2" rel="stylesheet" type="text/css">
 
 </head>
 
-<body id="page-top" class="index">
-
-    <!-- Navigation -->
+<!-- <body id="page-top" class="index"> -->
+<body ng-app="movr" ng-controller="IndexController">
+    <!--
     <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
         <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
+   
             <div class="navbar-header page-scroll">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
@@ -44,7 +49,7 @@ CTYPE html>
                 <a class="navbar-brand" href="#page-top">Movr</a>
             </div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
+  
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                 	<li class="active"><a href="#">Home</a></li>
@@ -55,12 +60,30 @@ CTYPE html>
 					<li><a href="findsim">Find matches</a></li>
 	        </ul>
             </div>
-            <!-- /.navbar-collapse -->
+ 
         </div>
-        <!-- /.container-fluid -->
-    </nav>
 
+    </nav>
+    -->
+    <nav data-sticky-container>
+        <div class="title-bar" data-sticky data-options="marginTop: 0;" style="width: 100%">
+            <div class="title-bar-left">
+                <h4><b>MOVR</b></h4>
+            </div>
+            <div class="title-bar-right">
+                <ul class="navbar no-bullet">
+                    <li ng-hide="loggedin" class="ng-hide"><a href="#/login">Login</a></li>
+                    <li ng-hide="loggedin" class="ng-hide"><a href="#/signup">Register</a></li>
+                    <li ng-show="loggedin"><a href="#/userpage">Profile</a></li>
+                    <li ng-show="loggedin"><button ng-click="logout()">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <div ng-view></div>
     <!-- Header -->
+    <!--
     <header>
         <div class="container">
             <div class="row">
@@ -75,19 +98,32 @@ CTYPE html>
             </div>
         </div>
     </header>
+    -->
 
     <!-- jQuery -->
     <script src="static/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="static/bootstrap.min.js"></script>
+    <!--<script src="static/bootstrap.min.js"></script>-->
 
     <!-- Plugin JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>-->
     <!-- Theme JavaScript -->
-    <script src="static/freelancer.min.js"></script>
-
+    <!--<script src="static/freelancer.min.js"></script>-->
+    
+    <!--<script src="https://use.fontawesome.com/948ad6c8e3.js"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js"></script>
+    <script src="http://code.angularjs.org/1.5.3/angular-route.js"></script>
+    
+    <!--<script src="/static/libs/ui-bootstrap-tpls-2.3.0.min.js"></script>-->
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/controllers.js"></script>
+    <script src="/static/js/services.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.4/foundation.js"></script>
+    <script>
+        $(document).foundation();
+    </script>
 </body>
 
 </html>

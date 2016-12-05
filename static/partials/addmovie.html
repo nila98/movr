@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="small-10 small-centered column">
+        <h2>Add favorite movies for <span ng-bind="user.firstname"></span> <span ng-bind="user.lastname"></span>
+    </div>
+    <div class="small-10 small-centered column">
+        <label><b>Title</b>
+            <input ng-model="title" type="text" required>
+        </label>
+        <button ng-click="getMovies()" type="button" class="button">Search Movies</button>
+        <div class="callout alert" ng-hide="message == ''">
+            <p><span ng-bind="message"></span></p>
+        </div>
+    </div>
+    <div class="small-10 small-centered column">
+        <ul>
+            <li ng-repeat="movie in movies">
+                <span ng-bind="movie[1]"></span> Production Year: <span ng-bind="movie[4]"></span>
+                <button ng-click="addMovie(movie[0])" type="button" class="tiny button">Add Movie</button>
+            </li>
+        </ul>
+    </div>
+</div>
