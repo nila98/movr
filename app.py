@@ -20,6 +20,7 @@ mysql = MySQL(app)
 def home():
 	return render_template('index.html')
 
+#test
 @app.route('/login', methods=['POST'])
 def login():
 	cursor = mysql.connection.cursor()
